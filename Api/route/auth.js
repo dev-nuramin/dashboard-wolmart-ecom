@@ -1,0 +1,18 @@
+import express from "express";
+import { login, logout, registar, loggedInUser } from "../controllers/authController.js";
+import tokenVerify from "../middlewares/verifyToken.js";
+
+
+const router = express.Router();
+
+// create route
+
+router.route("/login").post(login);
+router.route("/logout").post(logout);
+router.route("/registar").post(registar);
+
+
+// personal route
+router.get('/me', tokenVerify, loggedInUser)
+// export default router
+export default router;
