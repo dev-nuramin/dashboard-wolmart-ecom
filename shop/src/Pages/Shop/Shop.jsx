@@ -1,6 +1,9 @@
 import React from "react";
-import banner1 from '../../assets/images/shop/banner1.jpg'
-import shop1 from '../../assets/images/shop/1.jpg'
+import Products from "../../Components/Products/Products";
+import ShopSideBar from "../../Components/ShopPageSidebar/ShopSideBar";
+import banner1 from "../../assets/images/shop/banner1.jpg";
+
+
 const Shop = () => {
   return (
     <div>
@@ -50,117 +53,10 @@ const Shop = () => {
             </div>
             {/* <!-- End of Shop Banner --> */}
 
-            
-
-           
-
             {/* <!-- Start of Shop Content --> */}
             <div className="shop-content row gutter-lg mb-10">
               {/* <!-- Start of Sidebar, Shop Sidebar --> */}
-              <aside className="sidebar shop-sidebar sticky-sidebar-wrapper sidebar-fixed">
-                {/* <!-- Start of Sidebar Overlay --> */}
-                <div className="sidebar-overlay"></div>
-                <a className="sidebar-close" href="#">
-                  <i className="close-icon"></i>
-                </a>
-
-                {/* <!-- Start of Sidebar Content --> */}
-                <div className="sidebar-content scrollable">
-                  {/* <!-- Start of Sticky Sidebar --> */}
-                  <div className="sticky-sidebar">
-                    <div className="filter-actions">
-                      <label>Filter :</label>
-                      <a
-                        href="#"
-                        className="btn btn-dark btn-link filter-clean"
-                      >
-                        Clean All
-                      </a>
-                    </div>
-                    {/* <!-- Start of Collapsible widget --> */}
-                    <div className="widget widget-collapsible">
-                      <h3 className="widget-title">
-                        <span>All Categories</span>
-                      </h3>
-                      <ul className="widget-body filter-items search-ul">
-                        <li>
-                          <a href="#">Accessories</a>
-                        </li>
-                        <li>
-                          <a href="#">Babies</a>
-                        </li>
-                        <li>
-                          <a href="#">Beauty</a>
-                        </li>
-                        <li>
-                          <a href="#">Decoration</a>
-                        </li>
-                        <li>
-                          <a href="#">Electronics</a>
-                        </li>
-                        <li>
-                          <a href="#">Fashion</a>
-                        </li>
-                        <li>
-                          <a href="#">Food</a>
-                        </li>
-                        <li>
-                          <a href="#">Furniture</a>
-                        </li>
-                        
-                      </ul>
-                    </div>
-                    {/* <!-- End of Collapsible Widget -->
-
-                                    <!-- Start of Collapsible Widget --> */}
-                    <div className="widget widget-collapsible">
-                      <h3 className="widget-title">
-                        <span>Price</span>
-                      </h3>
-                      <div className="widget-body">
-                        
-                        <form className="price-range">
-                          <input
-                            type="number"
-                            name="min_price"
-                            className="min_price text-center"
-                            placeholder="$min"
-                          />
-                          <span className="delimiter">-</span>
-                          <input
-                            type="number"
-                            name="max_price"
-                            className="max_price text-center"
-                            placeholder="$max"
-                          />
-                          <a href="#" className="btn btn-primary btn-rounded">
-                            Go
-                          </a>
-                        </form>
-                      </div>
-                    </div>
-                    {/* <!-- End of Collapsible Widget -->
-
-                                    <!-- Start of Collapsible Widget --> */}
-                   
-                    {/* <!-- End of Collapsible Widget -->
-
-                                    <!-- Start of Collapsible Widget --> */}
-                    <div className="widget widget-collapsible">
-                      <h3 className="widget-title">
-                        <span>Brand</span>
-                      </h3>
-                      
-                    </div>
-                    {/* <!-- End of Collapsible Widget -->
-
-                                    <!-- Start of Collapsible Widget --> */}
-                    
-                  </div>
-                  {/* <!-- End of Sidebar Content --> */}
-                </div>
-                {/* <!-- End of Sidebar Content --> */}
-              </aside>
+              <ShopSideBar />
               {/* <!-- End of Shop Sidebar --> */}
 
               {/* <!-- Start of Shop Main Content --> */}
@@ -221,69 +117,15 @@ const Shop = () => {
                   </div>
                 </nav>
                 <div className="product-wrapper row cols-md-3 cols-sm-2 cols-2">
-                  <div className="product-wrap">
-                    <div className="product text-center">
-                      <figure className="product-media">
-                        <a href="product-default.html">
-                          <img
-                            src={shop1}
-                            alt="Product"
-                            width="300"
-                            height="338"
-                          />
-                        </a>
-                        <div className="product-action-horizontal">
-                          <a
-                            href="#"
-                            className="btn-product-icon btn-cart w-icon-cart"
-                            title="Add to cart"
-                          ></a>
-                          <a
-                            href="#"
-                            className="btn-product-icon btn-wishlist w-icon-heart"
-                            title="Wishlist"
-                          ></a>
-                          <a
-                            href="#"
-                            className="btn-product-icon btn-compare w-icon-compare"
-                            title="Compare"
-                          ></a>
-                          <a
-                            href="#"
-                            className="btn-product-icon btn-quickview w-icon-search"
-                            title="Quick View"
-                          ></a>
-                        </div>
-                      </figure>
-                      <div className="product-details">
-                        <div className="product-cat">
-                          <a href="shop-banner-sidebar.html">Electronics</a>
-                        </div>
-                        <h3 className="product-name">
-                          <a href="product-default.html">3D Television</a>
-                        </h3>
-                        <div className="ratings-container">
-                          <div className="ratings-full">
-                            <span
-                              className="ratings"
-                              style={{width: '100%'}}
-                            ></span>
-                            <span className="tooltiptext tooltip-top"></span>
-                          </div>
-                          <a
-                            href="product-default.html"
-                            className="rating-reviews"
-                          >
-                            (3 reviews)
-                          </a>
-                        </div>
-                        <div className="product-pa-wrapper">
-                          <div className="product-price">$220.00 - $230.00</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
+                  <Products />
+                  <Products />
+                  <Products />
+                  <Products />
+                  <Products />
+                  <Products />
+                  <Products />
+                  <Products />
+                  <Products />
                 </div>
 
                 <div className="toolbox toolbox-pagination justify-content-between">
@@ -295,7 +137,7 @@ const Shop = () => {
                       <a
                         href="#"
                         aria-label="Previous"
-                        tabindex="-1"
+                        tabIndex="-1"
                         aria-disabled="true"
                       >
                         <i className="w-icon-long-arrow-left"></i>Prev

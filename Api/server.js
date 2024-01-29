@@ -7,6 +7,9 @@ import userRouter from "./route/user.js";
 import authRouter from "./route/auth.js";
 import permissionRouter from "./route/permission.js";
 import roleRouter from "./route/role.js";
+import brandsRouter from "./route/Product/brand.js";
+import tagsRouter from "./route/Product/tag.js";
+import catsRouter from "./route/Product/category.js";
 import { errorHandler } from "./middlewares/errorhandler.js";
 import { mongoBDConnect } from "./config/db.js";
 import morgan from "morgan";
@@ -21,9 +24,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
   cors({
-    origin : "http://localhost:3000",
+    origin: "http://localhost:3000",
     credentials: true,
-
   })
 );
 app.use(cookieParser());
@@ -39,7 +41,9 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/permission", permissionRouter);
 app.use("/api/v1/role", roleRouter);
-
+app.use("/api/v1/brand", brandsRouter);
+app.use("/api/v1/tag", tagsRouter);
+app.use("/api/v1/category", catsRouter);
 
 // use error handler
 app.use(errorHandler);
