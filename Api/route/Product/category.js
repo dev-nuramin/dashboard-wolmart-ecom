@@ -7,6 +7,7 @@ import {
   getSingleCats,
   updateCats,
 } from "../../controllers/Product/category.js";
+import { catLogo } from "../../utils/multer.js";
 
 const router = express.Router();
 
@@ -14,7 +15,7 @@ const router = express.Router();
 router.use(tokenVerify);
 
 // create route
-router.route("/").get(getAllCats).post(createCats);
+router.route("/").get(getAllCats).post(catLogo, createCats);
 router
   .route("/:id")
   .get(getSingleCats)

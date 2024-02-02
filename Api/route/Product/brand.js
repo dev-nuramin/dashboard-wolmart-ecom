@@ -21,8 +21,8 @@ router
   .route("/:id")
   .get(getSingleBrand)
   .delete(deleteBrand)
-  .patch(updateBrand)
-  .put(updateBrand);
+  .patch(brandLogo, updateBrand)
+  .put(brandLogo, updateBrand);
 // router.route("/status/:id").patch(updateRoleStatus);
 
 // export default router

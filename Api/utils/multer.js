@@ -1,6 +1,7 @@
 import multer from "multer";
 
 // // create multer storage for server
+
 // const storage = multer.diskStorage({
 //   filename: (req, file, cb) => {
 //     if (file.fieldname == "cv") {
@@ -25,8 +26,18 @@ import multer from "multer";
 
 // configure for thirdparty
 
+
+
+
 //create multer for photo uploading to cloudenary
-const storage = multer.memoryStorage()
+// this way also can upload
+// const storage = multer.memoryStorage()
+const storage = multer.diskStorage({
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + Math.round(Math.random() * 1000000) +"_"+ file.fieldname)
+    }
+})
 
 // create barnd logo for uplod to brand photo
-export const brandLogo = multer({storage}).single('logo')
+export const brandLogo = multer({storage}).single('logo');
+export const catLogo = multer({storage}).single('catPhoto');

@@ -1,6 +1,8 @@
 import asyncHandler from "express-async-handler";
 import { createSlug } from "../../helper/slug.js";
 import Category from "../../models/Product/Category.js";
+import { cloudUploadPhoto, deleteCloudPhoto } from "../../utils/cloudUpload.js";
+import { findPublicId } from "../../helper/helpers.js";
 
 /**
  * @DESC Get all Brands data
@@ -59,6 +61,7 @@ export const getSingleCats = asyncHandler(async (req, res) => {
   res.status(200).json(singleCats);
 });
 
+
 /**
  * @DESC Create new Category
  * @ROUTE /api/v1/Category
@@ -66,7 +69,7 @@ export const getSingleCats = asyncHandler(async (req, res) => {
  * @access public
  */
 export const createCats = asyncHandler(async (req, res) => {
-  const { name, parentCategory } = req.body;
+  const { name, parentCategory, icon } = req.body;
 
   if (!name) {
     return res.status(400).json({ message: "Categories are required" });
@@ -79,13 +82,33 @@ export const createCats = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Category already exists" });
   }
 
+   let catIcon = null;
+   if(icon){
+     catIcon = icon
+   }
+   console.log(catIcon);
+
+
+
+   let uploadCatphoto = null
+  // category photo upload
+  if(req.file){
+   const photo = await cloudUploadPhoto(req);
+   uploadCatphoto = photo.secure_url;
+  }
+
+
+
   // create new Category
   const cats = await Category.create({
     name,
     slug: createSlug(name),
-    parentCategory: parentCategory ? parentCategory : null
+    parentCategory: parentCategory ? parentCategory : null,
+    icon : catIcon,
+    photo : uploadCatphoto ? uploadCatphoto : null
   });
 
+  // create category detailes in subcategory
   if(parentCategory){
     const parent = await Category.findByIdAndUpdate(parentCategory, {
         $push:{subCategory: cats._id}
@@ -94,6 +117,8 @@ export const createCats = asyncHandler(async (req, res) => {
   res.status(200).json({ cats, message: "Categories created successfully" });
 
 });
+
+
 
 /**
  * @DESC Delete Category
@@ -105,7 +130,14 @@ export const deleteCats = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   const cats = await Category.findByIdAndDelete(id);
-
+  
+  if(!cats){
+    return res.status(400).json({msg: 'Data not found'})
+  }
+  // delete cloudery photo to
+   if (cats.photo) {
+    await deleteCloudPhoto(findPublicId(cats.photo))
+  }
   res.status(200).json({ cats, message: "Category Deleted successfully" });
 });
 
