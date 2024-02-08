@@ -17,19 +17,19 @@ export const getAllCats = asyncHandler(async (req, res) => {
       populate: {
         path: "subCategory",
         populate: {
-          path: "subCategory"
-        }
-      }
+          path: "subCategory",
+        },
+      },
     },
     {
       path: "parentCategory",
       populate: {
         path: "parentCategory",
         populate: {
-          path: "parentCategory"
-        }
-      }
-    }
+          path: "parentCategory",
+        },
+      },
+    },
   ]);
 
   if (!cats) {
@@ -39,8 +39,6 @@ export const getAllCats = asyncHandler(async (req, res) => {
   if (cats.length > 0) {
     res.status(200).json({ cats, msg: "Get all categories successful" });
   }
-
-  
 });
 
 /**
@@ -60,7 +58,6 @@ export const getSingleCats = asyncHandler(async (req, res) => {
 
   res.status(200).json(singleCats);
 });
-
 
 /**
  * @DESC Create new Category
@@ -82,43 +79,36 @@ export const createCats = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Category already exists" });
   }
 
-   let catIcon = null;
-   if(icon){
-     catIcon = icon
-   }
-   console.log(catIcon);
-
-
-
-   let uploadCatphoto = null
-  // category photo upload
-  if(req.file){
-   const photo = await cloudUploadPhoto(req);
-   uploadCatphoto = photo.secure_url;
+  let catIcon = null;
+  if (icon) {
+    catIcon = icon;
   }
+  console.log(catIcon);
 
-
+  let uploadCatphoto = null;
+  // category photo upload
+  if (req.file) {
+    const photo = await cloudUploadPhoto(req);
+    uploadCatphoto = photo.secure_url;
+  }
 
   // create new Category
   const cats = await Category.create({
     name,
     slug: createSlug(name),
     parentCategory: parentCategory ? parentCategory : null,
-    icon : catIcon,
-    photo : uploadCatphoto ? uploadCatphoto : null
+    icon: catIcon,
+    photo: uploadCatphoto ? uploadCatphoto : null,
   });
 
   // create category detailes in subcategory
-  if(parentCategory){
+  if (parentCategory) {
     const parent = await Category.findByIdAndUpdate(parentCategory, {
-        $push:{subCategory: cats._id}
-    })
+      $push: { subCategory: cats._id },
+    });
   }
   res.status(200).json({ cats, message: "Categories created successfully" });
-
 });
-
-
 
 /**
  * @DESC Delete Category
@@ -130,16 +120,21 @@ export const deleteCats = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   const cats = await Category.findByIdAndDelete(id);
-  
-  if(!cats){
-    return res.status(400).json({msg: 'Data not found'})
+
+  if (!cats) {
+    return res.status(400).json({ msg: "Data not found" });
   }
   // delete cloudery photo to
-   if (cats.photo) {
-    await deleteCloudPhoto(findPublicId(cats.photo))
+  if (cats.photo) {
+    await deleteCloudPhoto(findPublicId(cats.photo));
   }
   res.status(200).json({ cats, message: "Category Deleted successfully" });
 });
+
+
+
+
+
 
 /**
  * @DESC Update Category
@@ -150,23 +145,58 @@ export const deleteCats = asyncHandler(async (req, res) => {
 export const updateCats = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  const { name } = req.body;
+  const { name, parentCategory, icon } = req.body;
 
   if (!name) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  const cats = await Category.findByIdAndUpdate(
-    id,
-    {
-      name,
-      slug: createSlug(name),
-    },
-    { new: true }
-  );
+  // update parentCategory
+  const catUpdate = await Category.findById(id);
 
-  res.status(200).json({ cats, message: "Category updated successfully" });
+  if (!catUpdate) {
+    return res.status(400).json({ message: "Category not found for update" });
+  }
+
+  // if parent category not upload then parentCategory will previous category
+  let updateCategory = catUpdate.parentCategory;
+  if (parentCategory) {
+    updateCategory = parentCategory ? parentCategory : null;
+  }
+
+  // update category icon
+  let catIcon = catUpdate.icon;
+  if (icon) {
+    catIcon = icon;
+  }
+
+  // update catory photo and delete previous photo
+  let catFile = catUpdate.photo;
+  if (req.file) {
+    const catPhoto = await cloudUploadPhoto(req);
+    catFile = catPhoto.secure_url ? catPhoto.secure_url : catFile;
+
+    // after upload photo delete previous photo
+    await deleteCloudPhoto(findPublicId(catUpdate.photo));
+  }
+  catUpdate.name = name;
+  catUpdate.slug = createSlug(name);
+  catUpdate.parentCategory = updateCategory;
+  catUpdate.icon = catIcon;
+  catUpdate.photo = catFile;
+  catUpdate.save();
+  res
+    .status(200)
+    .json({ cats: catUpdate, message: "Category updated successfully" });
 });
+
+
+
+
+
+
+
+
 
 /**
  * @DESC Update Category

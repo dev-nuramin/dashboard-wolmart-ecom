@@ -20,8 +20,8 @@ router
   .route("/:id")
   .get(getSingleCats)
   .delete(deleteCats)
-  .patch(updateCats)
-  .put(updateCats);
+  .patch(catLogo, updateCats)
+  .put(catLogo, updateCats);
 // router.route("/status/:id").patch(updateRoleStatus);
 
 // export default router

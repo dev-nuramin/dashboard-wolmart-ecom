@@ -10,6 +10,7 @@ import roleRouter from "./route/role.js";
 import brandsRouter from "./route/Product/brand.js";
 import tagsRouter from "./route/Product/tag.js";
 import catsRouter from "./route/Product/category.js";
+import productRouter from "./route/Product/Products/Products.js";
 import { errorHandler } from "./middlewares/errorhandler.js";
 import { mongoBDConnect } from "./config/db.js";
 import morgan from "morgan";
@@ -44,6 +45,7 @@ app.use("/api/v1/role", roleRouter);
 app.use("/api/v1/brand", brandsRouter);
 app.use("/api/v1/tag", tagsRouter);
 app.use("/api/v1/category", catsRouter);
+app.use("/api/v1/products", productRouter);
 
 // use error handler
 app.use(errorHandler);

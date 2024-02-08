@@ -1,8 +1,11 @@
 import asyncHandler from "express-async-handler";
-import { createSlug } from "../../helper/slug.js";
-import Brand from "../../models/Product/Brand.js";
-import { cloudUploadPhoto, deleteCloudPhoto } from "../../utils/cloudUpload.js";
-import { findPublicId } from "../../helper/helpers.js";
+import { createSlug } from "../../../helper/slug.js";
+import Products from "../../../models/Product/Products/Products.js";
+import {
+  cloudUploadPhoto,
+  deleteCloudPhoto,
+} from "../../../utils/cloudUpload.js";
+import { findPublicId } from "../../../helper/helpers.js";
 
 /**
  * @DESC Get all Brands data
@@ -10,15 +13,15 @@ import { findPublicId } from "../../helper/helpers.js";
  * @method GET
  * @access public
  */
-export const getAllBrands = asyncHandler(async (req, res) => {
-  const brands = await Brand.find();
-  console.log(brands);
-  if (brands.length > 0) {
-    res.status(200).json({ brands, msg: "Get all brands successful" });
+export const getAllProducts = asyncHandler(async (req, res) => {
+  const products = await Products.find();
+
+  if (products.length > 0) {
+    res.status(200).json({ products, msg: "Get all products successful" });
   }
 
-  if (!brands) {
-    res.send(404).json({ message: "Brands not found" });
+  if (!products) {
+    res.send(404).json({ message: "products not found" });
     return;
   }
 });
@@ -29,16 +32,16 @@ export const getAllBrands = asyncHandler(async (req, res) => {
  * @method GET
  * @access public
  */
-export const getSingleBrand = asyncHandler(async (req, res) => {
+export const getSingleProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  const singleBrand = await Brand.findById(id);
+  const singleProduct = await Products.findById(id);
 
-  if (!singleBrand) {
-    return res.status(404).json({ message: "singleBrand data not found" });
+  if (!singleProduct) {
+    return res.status(404).json({ message: "singleProduct data not found" });
   }
 
-  res.status(200).json(singleBrand);
+  res.status(200).json(singleProduct);
 });
 
 /**
@@ -47,36 +50,47 @@ export const getSingleBrand = asyncHandler(async (req, res) => {
  * @method POST
  * @access public
  */
-export const createBrand = asyncHandler(async (req, res) => {
-  const { name } = req.body;
+export const createProducts = asyncHandler(async (req, res) => {
+  const {
+    name,
+    productType,
+    productSimple,
+    productGroup,
+    productVariable,
+    productExternel,
+    shortDesc,
+    longDesc,
+  } = req.body;
 
   if (!name) {
-    return res.status(400).json({ message: "Brand are required" });
+    return res.status(400).json({ message: "Products are required" });
   }
 
   // check Brand email
 
-  const brandCheck = await Brand.findOne({ name });
+  const productCheck = await Products.findOne({ name });
 
-  if (brandCheck) {
-    return res.status(400).json({ message: "Brand already exists" });
+  if (productCheck) {
+    return res.status(400).json({ message: "Products already exists" });
   }
 
-  // call function from folder to upload photo
-  let uploadLogo = null;
-  if (req.file) {
-    const logo = await cloudUploadPhoto(req);
-    uploadLogo = logo;
-  }
+  
 
   // create new Brand
-  const brands = await Brand.create({
+  const brands = await Products.create({
     name,
     slug: createSlug(name),
-    logo: uploadLogo?.secure_url ? uploadLogo?.secure_url : null,
+    productType,
+    productSimple,
+    productGroup,
+    productVariable,
+    productExternel,
+    shortDesc,
+    longDesc,
+    
   });
 
-  res.status(200).json({ brands, message: "Brands created successfully" });
+  res.status(200).json({ brands, message: "Products created successfully" });
 });
 
 /**
@@ -116,7 +130,7 @@ export const updateBrand = asyncHandler(async (req, res) => {
 
   const brandUpdate = await Brand.findById(id);
 
-  if(!brandUpdate){
+  if (!brandUpdate) {
     return res.status(400).json({ message: "Brand data not found" });
   }
 
@@ -129,11 +143,12 @@ export const updateBrand = asyncHandler(async (req, res) => {
 
   brandUpdate.name = name;
   brandUpdate.logo = updateLogo;
-  brandUpdate.slug = createSlug(name)
-  brandUpdate.save()
+  brandUpdate.slug = createSlug(name);
+  brandUpdate.save();
 
-
-  res.status(200).json({ brands: brandUpdate, message: "Brand updated successfully" });
+  res
+    .status(200)
+    .json({ brands: brandUpdate, message: "Brand updated successfully" });
 });
 
 /**
