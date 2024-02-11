@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import { createSlug } from "../../../helper/slug.js";
 import Products from "../../../models/Product/Products/Products.js";
 import {
+  cloudMultiUploadPhoto,
   cloudUploadPhoto,
   deleteCloudPhoto,
 } from "../../../utils/cloudUpload.js";
@@ -62,11 +63,12 @@ export const createProducts = asyncHandler(async (req, res) => {
     longDesc,
   } = req.body;
 
+
   if (!name) {
     return res.status(400).json({ message: "Products are required" });
   }
 
-  // check Brand email
+  // check Product email
 
   const productCheck = await Products.findOne({ name });
 
@@ -74,52 +76,60 @@ export const createProducts = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Products already exists" });
   }
 
-  
+  // file manage
+  let productPhotos = []
+  for (let i = 0; i < req.files.length; i ++) {
+   const fileData = await cloudMultiUploadPhoto(req.files[i].path)
+   productPhotos.push(fileData)
+  }
 
-  // create new Brand
-  const brands = await Products.create({
+  
+  // before send data to server make it parse cause simpleData already strinfy
+  let simpleData = JSON.parse(productSimple)
+  
+  //create new product
+  const product = await Products.create({
     name,
     slug: createSlug(name),
     productType,
-    productSimple,
-    productGroup,
-    productVariable,
-    productExternel,
+    productSimple: productType === "simple" ? {...simpleData, productPhotos}: null,
+    productGroup: productType === "group" ? productGroup : null,
+    productVariable: productType === "variable" ? productVariable : null,
+    productExternel : productType === "external" ? productExternel : null,
     shortDesc,
     longDesc,
-    
   });
 
-  res.status(200).json({ brands, message: "Products created successfully" });
+  res.status(200).json({product,  message: "Products created successfully" });
 });
 
 /**
- * @DESC Delete Brand
+ * @DESC Delete Products
  * @ROUTE /api/v1/Brand/:id
  * @method DELETE
  * @access private
  */
-export const deleteBrand = asyncHandler(async (req, res) => {
+export const deleteProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  const brands = await Brand.findByIdAndDelete(id);
+  const product = await Products.findByIdAndDelete(id);
 
   // delete brand photo
-  if (brands.logo) {
-    const publicId = findPublicId(brands.logo);
-    await deleteCloudPhoto(publicId);
-  }
+  // if (brands.logo) {
+  //   const publicId = findPublicId(brands.logo);
+  //   await deleteCloudPhoto(publicId);
+  // }
 
-  res.status(200).json({ brands, message: "brands Deleted successfully" });
+  res.status(200).json({ product, message: "products Deleted successfully" });
 });
 
 /**
- * @DESC Update Brand
+ * @DESC Update Products
  * @ROUTE /api/v1/Brand/:id
  * @method PUT/PATCH
  * @access public
  */
-export const updateBrand = asyncHandler(async (req, res) => {
+export const updateProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   const { name } = req.body;
@@ -128,27 +138,27 @@ export const updateBrand = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  const brandUpdate = await Brand.findById(id);
+  const productsUpdate = await Products.findById(id);
 
-  if (!brandUpdate) {
+  if (!productsUpdate) {
     return res.status(400).json({ message: "Brand data not found" });
   }
 
-  let updateLogo = brandUpdate.logo;
+  // let updateLogo = brandUpdate.logo;
 
-  if (req.file) {
-    const logo = await cloudUploadPhoto(req);
-    updateLogo = logo.secure_url;
-  }
+  // if (req.file) {
+  //   const logo = await cloudUploadPhoto(req);
+  //   updateLogo = logo.secure_url;
+  // }
 
-  brandUpdate.name = name;
-  brandUpdate.logo = updateLogo;
-  brandUpdate.slug = createSlug(name);
-  brandUpdate.save();
+  productsUpdate.name = name;
+  // brandUpdate.logo = updateLogo;
+  productsUpdate.slug = createSlug(name);
+  productsUpdate.save();
 
   res
     .status(200)
-    .json({ brands: brandUpdate, message: "Brand updated successfully" });
+    .json({ brands: productsUpdate, message: "Product updated successfully" });
 });
 
 /**

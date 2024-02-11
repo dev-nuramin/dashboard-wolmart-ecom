@@ -5,6 +5,7 @@ import Dashboad from "../pages/Dashboard/Dashboard";
 import Role from "../pages/Role/Role";
 import Permission from "../pages/Permission/Permission";
 import PrivateGuard from "./PageGuard/PrivateGuard";
+import Brand from "../pages/Brand/Brand";
 
 // create private route
 const privateRoute = [
@@ -29,6 +30,10 @@ const privateRoute = [
                     {
                         path: '/permission',
                         element: <Permission />
+                    },
+                    {
+                        path: '/brand',
+                        element: <Brand />
                     },
                 ]
             },

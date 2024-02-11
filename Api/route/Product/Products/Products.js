@@ -1,9 +1,14 @@
 import express from "express";
 import tokenVerify from "../../../middlewares/verifyToken.js";
 
-
-// import { brandLogo } from "../../utils/multer.js";
-import { getAllProducts } from "../../../controllers/Product/Products/productController.js";
+import { productPhoto } from "../../../utils/multer.js";
+import {
+  createProducts,
+  deleteProduct,
+  getAllProducts,
+  getSingleProduct,
+  updateProduct,
+} from "../../../controllers/Product/Products/productController.js";
 
 const router = express.Router();
 
@@ -11,14 +16,14 @@ const router = express.Router();
 router.use(tokenVerify);
 
 // create route
-router.route("/").get(getAllProducts)
-// router.route.post(brandLogo, createBrand);
-// router
-//   .route("/:id")
-//   .get(getSingleBrand)
-//   .delete(deleteBrand)
-//   .patch(brandLogo, updateBrand)
-//   .put(brandLogo, updateBrand);
+router.route("/").get(getAllProducts).post(productPhoto, createProducts);
+
+router
+  .route("/:id")
+  .get(getSingleProduct)
+  .delete(deleteProduct)
+  .patch(updateProduct)
+  .put(updateProduct);
 // router.route("/status/:id").patch(updateRoleStatus);
 
 // export default router

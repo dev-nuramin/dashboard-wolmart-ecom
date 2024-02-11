@@ -23,7 +23,7 @@ cloudinary.config({
 // };
 
 // this way also can upload photo
-
+//single uploads
 export const cloudUploadPhoto = async (req) => {
   const data = await cloudinary.v2.uploader.upload(req.file.path);
   return data;
@@ -31,4 +31,10 @@ export const cloudUploadPhoto = async (req) => {
 // delte photo
 export const deleteCloudPhoto = async (publicId) => {
   await cloudinary.v2.uploader.destroy(publicId);
+};
+
+//multiple uploads
+export const cloudMultiUploadPhoto = async (path) => {
+  const data = await cloudinary.v2.uploader.upload(path);
+  return data.secure_url;
 };

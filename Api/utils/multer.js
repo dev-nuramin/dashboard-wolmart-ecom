@@ -41,3 +41,4 @@ const storage = multer.diskStorage({
 // create barnd logo for uplod to brand photo
 export const brandLogo = multer({storage}).single('logo');
 export const catLogo = multer({storage}).single('catPhoto');
+export const productPhoto = multer({storage}).array('productPhoto');

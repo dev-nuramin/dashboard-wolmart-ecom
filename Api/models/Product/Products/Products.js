@@ -31,21 +31,21 @@ const productSchema = mongoose.Schema(
     productSimple: {
       name: {
         type: String,
-        required: true,
+        // required: true,
       },
       regularPrice: {
         type: Number,
-        required: true,
+        // required: true,
         default: 0,
       },
       salePrice: {
         type: Number,
-        required: true,
+        // required: true,
         default: 0,
       },
       productPhotos: {
         type: [String],
-        required: true,
+        // required: true,
       },
       stock: {
         type: String,
@@ -112,7 +112,7 @@ const productSchema = mongoose.Schema(
     productExternal: {
       name: {
         type: String,
-        required: true,
+        // required: true,
       },
 
       regularPrice: {
@@ -150,21 +150,21 @@ const productSchema = mongoose.Schema(
     categories: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Category",
-      required: true,
+      // required: true,
     },
     tags: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Tag",
-      required: true,
+      // required: true,
     },
     brands: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Brand",
-      required: true,
+      // required: true,
     },
     shortDesc: {
       type: String,
-      required: true,
+      // required: true,
     },
 
     status: {
