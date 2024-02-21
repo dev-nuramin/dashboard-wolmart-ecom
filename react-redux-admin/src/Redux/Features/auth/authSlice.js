@@ -7,7 +7,7 @@ import {
   logoutUser,
   userRegisterSlice,
 } from "./authApiSlice";
-import { useSelector } from "react-redux";
+
 
 const authSlice = createSlice({
   name: "auth",
@@ -32,7 +32,7 @@ const authSlice = createSlice({
         state.message = actions.payload.message;
       })
       .addCase(loginSlice.rejected, (state, actions) => {
-        state.message = actions.payload.message;
+        state.error = actions.error.message;
       })
       .addCase(loginSlice.fulfilled, (state, actions) => {
         (state.message = actions.payload.message),
@@ -40,7 +40,7 @@ const authSlice = createSlice({
           localStorage.setItem("user", JSON.stringify(actions.payload.user));
       })
       .addCase(logoutUser.rejected, (state, actions) => {
-        state.message = actions.payload.message;
+        state.error = actions.error.message;
       })
       .addCase(logoutUser.fulfilled, (state, actions) => {
         (state.message = actions.payload.message),

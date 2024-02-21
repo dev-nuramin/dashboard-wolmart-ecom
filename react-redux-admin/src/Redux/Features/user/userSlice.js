@@ -111,7 +111,8 @@ const userSlice = createSlice({
 });
 
 //selectors
-export const getAllPermission = (state) => state.user;
+export const getAllPermission = (state) => state.authorised;
+
 //actions
 export const { setMessageEmpty } = userSlice.actions;
 //export authSlice

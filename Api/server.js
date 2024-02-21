@@ -42,7 +42,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/permission", permissionRouter);
 app.use("/api/v1/role", roleRouter);
-app.use("/api/v1/brand", brandsRouter);
+app.use("/api/v1/brands", brandsRouter);
 app.use("/api/v1/tag", tagsRouter);
 app.use("/api/v1/category", catsRouter);
 app.use("/api/v1/products", productRouter);

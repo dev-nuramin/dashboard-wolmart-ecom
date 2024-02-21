@@ -23,3 +23,24 @@
     right: 30px;
     bottom: 30px;
 }
+
+/* brand data table fix css */
+.kGckkd {
+    display: flex;
+    width: 100%;
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 18px !important;
+    font-weight: 500;
+}
+
+.kgOwiN {
+    display: flex;
+    align-items: stretch;
+    align-content: stretch;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 16px !important;
+    color: rgba(0, 0, 0, 0.87);
+    background-color: #FFFFFF;
+    min-height: 48px;
+}

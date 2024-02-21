@@ -6,11 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginSlice } from "../../Redux/Features/auth/authApiSlice";
 import { setMessageEmpty } from "../../Redux/Features/auth/authSlice";
 
+
 const Login = () => {
   // call dispatch for fetching data from server
   const dispatch = useDispatch();
   const { error, message, user } = useSelector((state) => state.auth);
- console.log(user)
+
   const navigate = useNavigate();
 
   // get input field data
@@ -54,6 +55,8 @@ const Login = () => {
     navigate("/")
    }
   }, [error, message, user]);
+
+  
 
   return (
     <>

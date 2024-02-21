@@ -1,7 +1,7 @@
 import React from "react";
 import {Modal} from "@rakan/bootstrap4rtl"
 import "./ModalPopup.scss";
-const ModalPopup = ({target, children, title}) => {
+const ModalPopup = ({ target, children, title}) => {
 
   return (
     <>

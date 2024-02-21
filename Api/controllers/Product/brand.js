@@ -41,6 +41,11 @@ export const getSingleBrand = asyncHandler(async (req, res) => {
   res.status(200).json(singleBrand);
 });
 
+
+
+
+
+
 /**
  * @DESC Create new Brand
  * @ROUTE /api/v1/Brand
@@ -63,21 +68,24 @@ export const createBrand = asyncHandler(async (req, res) => {
   }
 
   // call function from folder to upload photo
-  let uploadLogo = null;
+  let logoData = null;
   if (req.file) {
-    const logo = await cloudUploadPhoto(req);
-    uploadLogo = logo;
+    logoData = await cloudUploadPhoto(req);
+    
   }
 
   // create new Brand
   const brands = await Brand.create({
     name,
     slug: createSlug(name),
-    logo: uploadLogo?.secure_url ? uploadLogo?.secure_url : null,
+    logo: logoData.secure_url
   });
 
   res.status(200).json({ brands, message: "Brands created successfully" });
 });
+
+
+
 
 /**
  * @DESC Delete Brand
@@ -98,6 +106,8 @@ export const deleteBrand = asyncHandler(async (req, res) => {
 
   res.status(200).json({ brands, message: "brands Deleted successfully" });
 });
+
+
 
 /**
  * @DESC Update Brand

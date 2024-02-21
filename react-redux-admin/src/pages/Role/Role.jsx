@@ -15,8 +15,8 @@ import { createToast } from "../../utils/createToast";
 import { createRole, deleteRole, editRole, roleStatusUpdate} from "../../Redux/Features/user/userApiSlice";
 
 const Role = () => {
-  const { permission, role, error, message } = useSelector(getAllPermission);
-
+  const {permission, role, error, message } = useSelector(getAllPermission);
+ console.log(useSelector(state => state.permission))
   const dispatch = useDispatch();
 
   const { input, handleInputChange, clearForms } = useFormFields({

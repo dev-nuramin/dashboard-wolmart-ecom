@@ -22,7 +22,7 @@ const Sidebar = () => {
                   </Link>
                 </li>
                 <li className="">
-                  <Link to="/">
+                  <Link to="/brand">
                     <i className="fe fe-bolt"></i> <span>Brands</span>
                   </Link>
                 </li>

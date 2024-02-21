@@ -20,4 +20,4 @@ const useFormFields = (initState) => {
   return {input, handleInputChange, clearForms}
 }
 
-export default useFormFields
+export default useFormFields;
